@@ -11,21 +11,28 @@
         trendingMagProDeleteOption();
     });
 
+    /**
+     * Adds new input field to the option list.
+     */
     function trendingMagProAddNewOption() {
-        $(document).on('click', '#add-new-option', function(e) {
+        var nameAttr = 'undefined' !== typeof trending_mag_pro.field_name ? trending_mag_pro.field_name.option_input_field : '';
+        var html = `
+        <div class="option-input-field-wrap">
+            <input type="text" class="option-input-field" value="" name="${nameAttr}" >
+            <button class="button delete-option-input-field">X</button>
+        </div>
+        `;
+        $(document).on('click', '#add-new-option', function (e) {
             e.preventDefault();
-            var html = `
-            <div class="option-input-field-wrap">
-                <input type="text" class="option-input-field" value="" name="" >
-                <button class="button delete-option-input-field">X</button>
-            </div>
-            `;
             $('#options-list').append(html);
         });
     }
 
+    /**
+     * Deletes the current input field.
+     */
     function trendingMagProDeleteOption() {
-        $(document).on('click', '.delete-option-input-field', function(e) {
+        $(document).on('click', '.delete-option-input-field', function (e) {
             e.preventDefault();
             $(this).parent('.option-input-field-wrap').remove();
         });

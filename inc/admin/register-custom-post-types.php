@@ -45,7 +45,7 @@ if ( ! function_exists( 'trending_mag_pro_custom_post_type' ) ) {
 		);
 		$args   = array(
 			'label'               => __( 'Polls', 'trending-mag-pro' ),
-			'description'         => __( 'Create polls to under your users in a better way.', 'trending-mag-pro' ),
+			'description'         => __( 'Create polls to understand your users in a better way.', 'trending-mag-pro' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
