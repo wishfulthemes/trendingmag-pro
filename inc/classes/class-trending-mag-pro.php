@@ -42,7 +42,14 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 		public static function includes() {
 			$root_dir = TRENDING_MAG_PRO_ROOT;
 
-			$files_path = array();
+			$files_path = array(
+				'inc/admin/register-custom-post-types.php',
+				'inc/admin/register-metaboxes.php',
+			);
+
+			foreach ( $files_path as $file ) {
+				require_once $root_dir . $file;
+			}
 
 		}
 	}
