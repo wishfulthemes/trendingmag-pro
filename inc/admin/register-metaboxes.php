@@ -113,6 +113,17 @@ function trending_mag_pro_metabox_poll_options( $post ) {
  * @param WP_Post $post Current post object.
  */
 function trending_mag_pro_metabox_poll_statistics( $post ) {
+
+	$post_id = is_object( $post ) && isset( $post->ID ) ? $post->ID : '';
+
+	if ( empty( $post_id ) ) {
+		return;
+	}
+
+	$post_data    = trending_mag_pro_get_post_data( $post_id );
+	$polls_data   = ! empty( $post_data['trending_mag_polls'] ) ? $post_data['trending_mag_polls'] : array();
+	$poll_options = ! empty( $polls_data['poll_options'] ) ? $polls_data['poll_options'] : array();
+
 	?>
 	<div id="trending-mag-pro-poll-statistics">
 		<div class="container">
