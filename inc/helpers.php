@@ -188,24 +188,23 @@ if ( ! function_exists( 'trending_mag_pro_list_sharer_button' ) ) {
 		ob_start();
 		if ( is_array( $sharer_links ) && ! empty( $sharer_links ) ) {
 			foreach ( $sharer_links as $social => $links ) {
-				if ( in_array( $social, $args, true ) ) {
-					$fa_class = "fa fa-{$social}";
-					if ( 'linkedin' === $social ) {
-						$fa_class = "{$fa_class}-in";
-					}
-					?>
-					<li class="<?php echo esc_attr( $social ); ?>">
-						<a href="<?php echo esc_url( $links ); ?>" target="_blank" rel="noopener noreferrer">
-							<i class="<?php echo esc_attr( $fa_class ); ?>"></i> <?php esc_html_e( 'Share', 'trending-mag-pro' ); ?>
-						</a>
-					</li>
-					<?php
+				if ( ! in_array( $social, $args, true ) ) {
+					continue;
 				}
+				$fa_class   = "fa fa-{$social}";
+				$title_attr = __( 'Share on', 'trending-mag-pro' ) . ' ' . ucfirst( $social );
+				?>
+				<li class="<?php echo esc_attr( $social ); ?>" title="<?php echo esc_attr( $title_attr ); ?>" >
+					<a href="<?php echo esc_url( $links ); ?>" target="_blank" rel="noopener noreferrer">
+						<i class="<?php echo esc_attr( $fa_class ); ?>"></i> <?php esc_html_e( 'Share', 'trending-mag-pro' ); ?>
+					</a>
+				</li>
+				<?php
 			}
 		}
 		$content = ob_get_clean();
 
-		echo $content;
+		echo $content; // phpcs:ignore
 
 	}
 }

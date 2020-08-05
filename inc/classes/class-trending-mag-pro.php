@@ -56,12 +56,6 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 		 */
 		public static function includes() {
 
-			// Whatsapp,
-			// facebook,
-			// pinterest,
-			// twitter,
-			// linkedin
-
 			$root_dir = TRENDING_MAG_PRO_ROOT;
 
 			$files_path = array(
@@ -72,6 +66,7 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 
 				'inc/classes/class-trending-mag-pro-save-posts.php',
 				'inc/classes/class-trending-mag-pro-widget.php',
+				'inc/classes/class-trending-mag-pro-customizer.php',
 			);
 
 			foreach ( $files_path as $file ) {
