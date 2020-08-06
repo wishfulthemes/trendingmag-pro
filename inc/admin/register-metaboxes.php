@@ -120,14 +120,35 @@ function trending_mag_pro_metabox_poll_statistics( $post ) {
 		return;
 	}
 
-	$post_data    = trending_mag_pro_get_post_data( $post_id );
-	$polls_data   = ! empty( $post_data['trending_mag_polls'] ) ? $post_data['trending_mag_polls'] : array();
-	$poll_options = ! empty( $polls_data['poll_options'] ) ? $polls_data['poll_options'] : array();
+	$post_data  = trending_mag_pro_get_post_data( $post_id );
+	$polls_data = ! empty( $post_data['trending_mag_polls'] ) ? $post_data['trending_mag_polls'] : array();
+	$poll_stats = ! empty( $polls_data['poll_stats'] ) ? $polls_data['poll_stats'] : array();
+
+	arsort( $poll_stats );
 
 	?>
 	<div id="trending-mag-pro-poll-statistics">
 		<div class="container">
-			<h3>No information available</h3>
+			<?php
+			if ( is_array( $poll_stats ) && ! empty( $poll_stats ) ) {
+				?>
+				<ul class="list-stats">
+					<?php
+					foreach ( $poll_stats as $option => $time ) {
+						$count  = is_array( $time ) ? count( $time ) : 0;
+						$text   = __( 'Voted for', 'trending-mag-pro' );
+						$result = sprintf( _n( '%s time', '%s times', $count, 'trending-mag-pro' ), number_format_i18n( $count ) );
+						printf( '<li><strong>%1$s</strong>: %2$s %3$s</li>', esc_html( $option ), esc_html( $text ), $result );
+					}
+					?>
+				</ul>
+				<?php
+			} else {
+				?>
+				<h3>No information available</h3>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 	<?php

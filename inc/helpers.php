@@ -121,8 +121,8 @@ if ( ! function_exists( 'trending_mag_pro_get_poll_content' ) ) {
 						foreach ( $option_input_field as $option_input_value ) {
 							?>
 							<li>
-								<label class="rm-label" for="trending-mag-pro-poll-<?php echo esc_attr( $option_input_value ); ?>">
-									<input value="<?php echo esc_attr( $option_input_value ); ?>" type="<?php echo esc_attr( $type ); ?>" id="trending-mag-pro-poll-<?php echo esc_attr( $option_input_value ); ?>" name="<?php trending_mag_pro_generate_field_name( $name, 'trending-mag-polls' ); ?>"> <?php echo esc_html( $option_input_value ); ?>
+								<label class="rm-label">
+									<input value="<?php echo esc_attr( $option_input_value ); ?>" type="<?php echo esc_attr( $type ); ?>" name="<?php trending_mag_pro_generate_field_name( $name, 'trending-mag-polls' ); ?>"> <?php echo esc_html( $option_input_value ); ?>
 								</label>
 							</li>
 							<?php
@@ -135,6 +135,14 @@ if ( ! function_exists( 'trending_mag_pro_get_poll_content' ) ) {
 				<input type="hidden" name="<?php trending_mag_pro_generate_field_name( 'poll_options[poll_id]', 'trending-mag-polls' ); ?>" value="<?php echo esc_attr( $poll_id ); ?>">
 				<?php wp_nonce_field( '_trending_mag_pro_nonce_action', '_trending_mag_pro_nonce' ); ?>
 			</form>
+			<script>
+			/**
+			 * Preventing from resubmission of form on page reload.
+			 */
+			if ( window.history.replaceState ) {
+				window.history.replaceState( null, null, window.location.href );
+			}
+			</script>
 			<?php
 		}
 

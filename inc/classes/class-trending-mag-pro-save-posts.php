@@ -24,24 +24,76 @@ if ( ! class_exists( 'Trending_Mag_Pro_Save_Posts' ) ) {
 		 * Init class.
 		 */
 		public function __construct() {
-			add_action( 'save_post', array( $this, 'admin_save_post' ) );
+			add_action( 'save_post', array( $this, 'admin_save_poll' ) );
+			$this->frontend_poll_vote();
 		}
 
 		/**
-		 * Save wishful posts.
+		 * Save admin side poll.
 		 *
-		 * @param int $post_id Current post id.
+		 * @param int $poll_id Current post id.
 		 */
-		public function admin_save_post( $post_id ) {
+		public function admin_save_poll( $poll_id ) {
 
-			if ( empty( $post_id ) ) {
-				return $post_id;
+			if ( empty( $poll_id ) ) {
+				return $poll_id;
+			}
+
+			if ( ! is_admin() ) {
+				return $poll_id;
+			}
+
+			$polls_data     = trending_mag_pro_get_post_data( $poll_id );
+			$submitted_data = trending_mag_pro_get_submitted_data();
+
+			$polls = ! empty( $submitted_data['trending_mag_polls'] ) ? $submitted_data['trending_mag_polls'] : '';
+
+			$poll_options = ! empty( $polls['poll_options'] ) ? $polls['poll_options'] : '';
+
+			$polls_data['trending_mag_polls']['poll_options'] = $poll_options;
+
+			if ( ! empty( $submitted_data ) ) {
+				update_post_meta( $poll_id, 'trending_mag_pro', $polls_data );
+			}
+
+		}
+
+		/**
+		 * Saves the poll stats.
+		 */
+		public function frontend_poll_vote() {
+
+			if ( is_admin() ) {
+				return;
 			}
 
 			$submitted_data = trending_mag_pro_get_submitted_data();
 
-			if ( ! empty( $submitted_data ) ) {
-				update_post_meta( $post_id, 'trending_mag_pro', $submitted_data );
+			$polls = ! empty( $submitted_data['trending_mag_polls'] ) ? $submitted_data['trending_mag_polls'] : '';
+
+			$poll_options = ! empty( $polls['poll_options'] ) ? $polls['poll_options'] : '';
+
+			$selected_poll = ! empty( $poll_options['selected_poll'] ) ? $poll_options['selected_poll'] : '';
+			$poll_id       = ! empty( $poll_options['poll_id'] ) ? $poll_options['poll_id'] : '';
+
+			if ( ! $poll_id ) {
+				return;
+			}
+
+			$polls_data = trending_mag_pro_get_post_data( $poll_id );
+
+			if ( ! empty( $selected_poll ) ) {
+				if ( is_array( $selected_poll ) ) {
+					foreach ( $selected_poll as $poll ) {
+						$polls_data['trending_mag_polls']['poll_stats'][ $poll ][] = time();
+					}
+				} else {
+					$polls_data['trending_mag_polls']['poll_stats'][ $selected_poll ][] = time();
+				}
+			}
+
+			if ( $polls_data ) {
+				update_post_meta( $poll_id, 'trending_mag_pro', $polls_data );
 			}
 
 		}
