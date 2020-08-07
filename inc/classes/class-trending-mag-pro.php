@@ -24,6 +24,7 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 		 */
 		public static function init() {
 			self::includes();
+			add_action( 'wp_head', array( __CLASS__, 'hook_og_tags' ) );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_assets' ) );
 		}
 
@@ -49,6 +50,26 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 			wp_register_script( 'trending-mag-pro-admin-script', "{$root_url}assets/js/admin.js", array( 'jquery' ), '1.0.0', true );
 			wp_localize_script( 'trending-mag-pro-admin-script', 'trending_mag_pro', $data );
 			wp_enqueue_script( 'trending-mag-pro-admin-script' );
+		}
+
+		/**
+		 * Hooks the og meta tags to the single posts.
+		 */
+		public static function hook_og_tags() {
+			if ( ! is_single() ) {
+				return;
+			}
+			?>
+			<!--  Essential META Tags -->
+			<meta property="og:title" content="<?php the_title(); ?>">
+			<meta property="og:description" content="<?php echo esc_html( get_the_excerpt() ); ?>">
+			<meta property="og:image" content="<?php the_post_thumbnail_url( 'full' ); ?>">
+			<meta property="og:url" content="<?php the_permalink(); ?>">
+			<meta name="twitter:card" content="summary_large_image">
+
+			<!--  Non-Essential, But Recommended -->
+			<meta property="og:site_name" content="<?php bloginfo(); ?>">
+			<?php
 		}
 
 		/**
