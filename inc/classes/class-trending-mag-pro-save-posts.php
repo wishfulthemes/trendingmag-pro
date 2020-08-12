@@ -35,15 +35,21 @@ if ( ! class_exists( 'Trending_Mag_Pro_Save_Posts' ) ) {
 		 */
 		public function admin_save_poll( $poll_id ) {
 
+			$polls_data = array();
+
 			if ( empty( $poll_id ) ) {
 				return $poll_id;
+			}
+
+			if ( 'trending-mag-polls' !== get_post_type( $poll_id ) ) {
+				return;
 			}
 
 			if ( ! is_admin() ) {
 				return $poll_id;
 			}
 
-			$polls_data     = trending_mag_pro_get_post_data( $poll_id );
+			$polls_data     = (array) trending_mag_pro_get_post_data( $poll_id );
 			$submitted_data = trending_mag_pro_get_submitted_data();
 
 			$polls = ! empty( $submitted_data['trending_mag_polls'] ) ? $submitted_data['trending_mag_polls'] : '';
