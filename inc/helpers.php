@@ -246,3 +246,4 @@ if ( ! function_exists( 'trending_mag_pro_list_sharer_button' ) ) {
 	}
 }
 
+
