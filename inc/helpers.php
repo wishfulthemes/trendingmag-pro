@@ -169,6 +169,35 @@ if ( ! function_exists( 'trending_mag_pro_get_supported_sharer' ) ) {
 }
 
 
+/**
+ * Saves the sharer count.
+ * Migrated from the theme to the plugin.
+ */
+function trending_mag_pro_save_sharer_count() {
+	if ( ! is_single() ) {
+		return;
+	}
+	if ( ! isset( $_POST['trending_mag'] ) ) {
+		return;
+	}
+	if ( ! isset( $_POST['trending_mag_sharer_nonce'] ) && ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['trending_mag_sharer_nonce'] ) ), 'trending_mag_sharer_nonce' ) ) {
+		return;
+	}
+	$submitted_data = sanitize_meta( 'trending_mag', $_POST, 'post' );
+	$post_id        = ! empty( $submitted_data['trending_mag']['sharer']['post_id'] ) ? $submitted_data['trending_mag']['sharer']['post_id'] : '';
+	if ( empty( $post_id ) ) {
+		return;
+	}
+	$prev_count = get_post_meta( $post_id, 'trending_mag_sharer_count', true );
+	if ( '' !== $prev_count ) {
+		$prev_count++;
+		update_post_meta( $post_id, 'trending_mag_sharer_count', $prev_count );
+	} else {
+		add_post_meta( $post_id, 'trending_mag_sharer_count', 0 );
+	}
+}
+add_action( 'wp_head', 'trending_mag_pro_save_sharer_count' );
+
 
 if ( ! function_exists( 'trending_mag_pro_list_sharer_button' ) ) {
 
