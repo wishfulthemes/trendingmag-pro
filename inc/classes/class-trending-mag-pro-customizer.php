@@ -82,7 +82,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			}
 
 			$this->color_options( $wp_customize );
-			$this->section_fonts( $wp_customize );
+			$this->typography( $wp_customize );
 		}
 
 
@@ -148,195 +148,116 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 
 
 		/**
-		 * Fonts typography for frontpage individual sections.
+		 * Fonts typography pro features.
 		 */
-		private function section_fonts( $wp_customize ) {
+		private function typography( $wp_customize ) {
 
-			$trending_mag_fonts = trending_mag_get_fonts();
-
-			$heading_font = trending_mag_get_theme_mod( 'General Options', 'Typography', 'Heading Font' );
-			$content_font = trending_mag_get_theme_mod( 'General Options', 'Typography', 'Content Font' );
-
-			/**
-			 * Banner slider.
-			 */
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'banner_slider', 'heading_font' ),
-					'default'           => $heading_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'banner_slider' ),
-					'priority'          => 20,
-				)
+			$font_weights = array(
+				''    => 'default',
+				'100' => '100',
+				'200' => '200',
+				'300' => '300',
+				'400' => '400',
+				'500' => '500',
+				'600' => '600',
+				'700' => '700',
+				'800' => '800',
+				'900' => '900',
 			);
+
 			trending_mag_register_option(
 				$wp_customize,
 				array(
 					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'banner_slider', 'content_font' ),
-					'default'           => $content_font,
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'excerpt_more' ),
+					'default'           => 'default',
 					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'banner_slider' ),
-					'priority'          => 20,
+					'label'             => esc_html__( 'Excerpt More', 'trending-mag' ),
+					'choices'           => array(
+						'default' => __( 'Default', 'trending-mag-pro' ) . ' [...]',
+						'dots'    => __( 'Three Dots', 'trending-mag-pro' ) . ' ...',
+						'link'    => __( 'Read More', 'trending-mag-pro' ) . ' ( link )',
+					),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
+					'priority'          => 15,
 				)
 			);
 
-			/**
-			 * Section one.
-			 */
 			trending_mag_register_option(
 				$wp_customize,
 				array(
 					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_one', 'heading_font' ),
-					'default'           => $heading_font,
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'posts_title_font_weight' ),
+					'default'           => 'default',
 					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_one' ),
+					'label'             => esc_html__( 'Posts Title Font Weight', 'trending-mag' ),
+					'choices'           => $font_weights,
+					'description'       => __( 'Notice: Font weight might not display expected result with every fonts.', 'trending-mag-pro' ),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
 					'priority'          => 20,
 				)
 			);
 			trending_mag_register_option(
 				$wp_customize,
 				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_one', 'content_font' ),
-					'default'           => $content_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_one' ),
-					'priority'          => 20,
-				)
-			);
-
-			/**
-			 * Section two.
-			 */
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_two', 'heading_font' ),
-					'default'           => $heading_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_two' ),
-					'priority'          => 20,
-				)
-			);
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_two', 'content_font' ),
-					'default'           => $content_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_two' ),
-					'priority'          => 20,
+					'type'              => 'number',
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'posts_title_font_size' ),
+					'sanitize_callback' => 'absint',
+					'input_attrs'       => array(
+						'min' => 0,
+					),
+					'label'             => esc_html__( 'Posts Title Font Size', 'trending-mag' ),
+					'description'       => __( 'Font size in pixels.', 'trending-mag-pro' ),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
+					'priority'          => 25,
 				)
 			);
 
-			/**
-			 * Section three.
-			 */
 			trending_mag_register_option(
 				$wp_customize,
 				array(
 					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_three', 'heading_font' ),
-					'default'           => $heading_font,
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'posts_content_font_weight' ),
+					'default'           => 'default',
 					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_three' ),
-					'priority'          => 20,
+					'label'             => esc_html__( 'Posts Content Font Weight', 'trending-mag' ),
+					'choices'           => $font_weights,
+					'description'       => __( 'Notice: Font weight might not display expected result with every fonts.', 'trending-mag-pro' ),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
+					'priority'          => 30,
 				)
 			);
 			trending_mag_register_option(
 				$wp_customize,
 				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_three', 'content_font' ),
-					'default'           => $content_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_three' ),
-					'priority'          => 20,
-				)
-			);
-
-			/**
-			 * Section four.
-			 */
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_four', 'heading_font' ),
-					'default'           => $heading_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_four' ),
-					'priority'          => 20,
-				)
-			);
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_four', 'content_font' ),
-					'default'           => $content_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_four' ),
-					'priority'          => 20,
+					'type'              => 'number',
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'posts_content_font_size' ),
+					'sanitize_callback' => 'absint',
+					'input_attrs'       => array(
+						'min' => 0,
+					),
+					'label'             => esc_html__( 'Posts Content Font Size', 'trending-mag' ),
+					'description'       => __( 'Font size in pixels.', 'trending-mag-pro' ),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
+					'priority'          => 35,
 				)
 			);
 
-			/**
-			 * Section five.
-			 */
 			trending_mag_register_option(
 				$wp_customize,
 				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_five', 'heading_font' ),
-					'default'           => $heading_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Heading Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_five' ),
-					'priority'          => 20,
+					'type'              => 'number',
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'typography', 'line_spacing' ),
+					'sanitize_callback' => 'absint',
+					'input_attrs'       => array(
+						'min' => 0,
+					),
+					'label'             => esc_html__( 'Line Spacing', 'trending-mag' ),
+					'description'       => __( 'Line spacing in pixels.', 'trending-mag-pro' ),
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'typography' ),
+					'priority'          => 35,
 				)
 			);
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'select',
-					'name'              => trending_mag_customizer_fields_settings_id( 'front_page', 'section_five', 'content_font' ),
-					'default'           => $content_font,
-					'sanitize_callback' => 'trending_mag_sanitize_select',
-					'label'             => esc_html__( 'Content Font', 'trending-mag' ),
-					'choices'           => $trending_mag_fonts,
-					'section'           => trending_mag_get_customizer_section_id( 'front_page', 'section_five' ),
-					'priority'          => 20,
-				)
-			);
-
 		}
 
 	}
