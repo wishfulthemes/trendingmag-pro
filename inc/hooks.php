@@ -46,6 +46,10 @@ add_action( 'wp_head', 'trending_mag_pro_save_sharer_count' );
  */
 function trending_mag_pro_custom_excerpt_more( $more ) {
 
+	if ( ! function_exists( 'trending_mag_get_theme_mod' ) ) {
+		return $more;
+	}
+
 	$excerpt_more = trending_mag_get_theme_mod( 'general_options', 'typography', 'excerpt_more' );
 
 	if ( 'default' === $excerpt_more || ! $excerpt_more ) {

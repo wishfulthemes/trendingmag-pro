@@ -33,7 +33,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		 * Generates the css.
 		 */
 		private function render_css( $selector, $property, $value ) {
-			$css = $selector . '{ ' . $property . ':' . $value . '; }';
+			$css = $selector . '{ ' . $property . ':' . esc_attr( $value ) . '; }';
 			return $css;
 		}
 
@@ -46,6 +46,8 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 
 			$colors = isset( $mods['colors']['colors'] ) ? $mods['colors']['colors'] : '';
 
+			$typography = isset( $mods['general_options']['typography'] ) ? $mods['general_options']['typography'] : '';
+
 			$topbar_background_color = isset( $colors['topbar_background_color'] ) ? sanitize_hex_color( $colors['topbar_background_color'] ) : '';
 			$header_background_color = isset( $colors['header_background_color'] ) ? sanitize_hex_color( $colors['header_background_color'] ) : '';
 			$footer_background_color = isset( $colors['footer_background_color'] ) ? sanitize_hex_color( $colors['footer_background_color'] ) : '';
@@ -54,6 +56,24 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			$custom_css .= $this->render_css( '.rm-header-s1 .rm-logo-block', 'background-color', $header_background_color );
 			$custom_css .= $this->render_css( '.footer .footer-inner', 'background-color', $footer_background_color );
 
+			/**
+			 * Typography styles.
+			 */
+			if ( isset( $typography['posts_title_font_weight'] ) && ! empty( $typography['posts_title_font_weight'] ) ) {
+				$custom_css .= $this->render_css( 'q, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, blockquote', 'font-weight', $typography['posts_title_font_weight'] );
+			}
+			if ( isset( $typography['posts_title_font_size'] ) && ! empty( $typography['posts_title_font_size'] ) ) {
+				$custom_css .= $this->render_css( 'h2', 'font-size', "{$typography['posts_title_font_size']}px" );
+			}
+			if ( isset( $typography['posts_content_font_weight'] ) && ! empty( $typography['posts_content_font_weight'] ) ) {
+				$custom_css .= $this->render_css( 'p', 'font-weight', $typography['posts_content_font_weight'] );
+			}
+			if ( isset( $typography['posts_content_font_size'] ) && ! empty( $typography['posts_content_font_size'] ) ) {
+				$custom_css .= $this->render_css( 'p', 'font-size', "{$typography['posts_content_font_size']}px" );
+			}
+			if ( isset( $typography['line_spacing'] ) && ! empty( $typography['line_spacing'] ) ) {
+				$custom_css .= $this->render_css( 'p', 'line-height', "{$typography['line_spacing']}px" );
+			}
 			return $custom_css;
 		}
 
@@ -153,7 +173,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		private function typography( $wp_customize ) {
 
 			$font_weights = array(
-				''    => 'default',
+				''    => 'Default',
 				'100' => '100',
 				'200' => '200',
 				'300' => '300',
