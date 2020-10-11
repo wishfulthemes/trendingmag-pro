@@ -68,3 +68,29 @@ function trending_mag_pro_custom_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'trending_mag_pro_custom_excerpt_more' );
 
+
+
+if ( ! function_exists( 'trending_mag_pro_copyright_text' ) ) {
+
+	/**
+	 * Sets custom copyright text.
+	 */
+	function trending_mag_pro_copyright_text( $copyright ) {
+
+		if ( ! $copyright || ! function_exists( 'trending_mag_get_theme_mod' ) ) {
+			return $copyright;
+		}
+
+		$custom_copyright = trending_mag_get_theme_mod( 'general_options', 'footer_options', 'copyright_text' );
+
+		if ( $custom_copyright ) {
+			$copyright  = '';
+			$copyright .= '<div class="rm-copy-right">';
+			$copyright .= wpautop( $custom_copyright );
+			$copyright .= '</div><!-- // rm-copy-right -->';
+		}
+
+		return $copyright;
+	}
+	add_filter( 'trending_mag_footer_copyright', 'trending_mag_pro_copyright_text' );
+}
