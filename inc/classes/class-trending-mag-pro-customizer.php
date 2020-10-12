@@ -48,18 +48,32 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 
 			$typography = isset( $mods['general_options']['typography'] ) ? $mods['general_options']['typography'] : '';
 
+			$topbar_background_color      = isset( $colors['topbar_background_color'] ) ? sanitize_hex_color( $colors['topbar_background_color'] ) : '';
+			$topbar_text_color            = isset( $colors['topbar_text_color'] ) ? sanitize_hex_color( $colors['topbar_text_color'] ) : '#333333';
+			$header_background_color      = isset( $colors['header_background_color'] ) ? sanitize_hex_color( $colors['header_background_color'] ) : '';
+			$menu_color                   = isset( $colors['menu_color'] ) ? sanitize_hex_color( $colors['menu_color'] ) : '#ffffff';
+			$menu_hover_color             = isset( $colors['menu_hover_color'] ) ? sanitize_hex_color( $colors['menu_hover_color'] ) : '#333333';
+			$submenu_color                = isset( $colors['submenu_color'] ) ? sanitize_hex_color( $colors['submenu_color'] ) : '';
+			$submenu_hover_color          = isset( $colors['submenu_hover_color'] ) ? sanitize_hex_color( $colors['submenu_hover_color'] ) : '#EA2027';
+			$search_icon_color            = isset( $colors['search_icon_color'] ) ? sanitize_hex_color( $colors['search_icon_color'] ) : '#333333';
+			$header_widgets_icon_color    = isset( $colors['header_widgets_icon_color'] ) ? sanitize_hex_color( $colors['header_widgets_icon_color'] ) : '#333333';
 			$section_title_bar_color      = isset( $colors['section_title_bar_color'] ) ? sanitize_hex_color( $colors['section_title_bar_color'] ) : '';
 			$section_title_bar_font_color = isset( $colors['section_title_bar_font_color'] ) ? sanitize_hex_color( $colors['section_title_bar_font_color'] ) : '';
-			$topbar_background_color      = isset( $colors['topbar_background_color'] ) ? sanitize_hex_color( $colors['topbar_background_color'] ) : '';
-			$header_background_color      = isset( $colors['header_background_color'] ) ? sanitize_hex_color( $colors['header_background_color'] ) : '';
 			$footer_background_color      = isset( $colors['footer_background_color'] ) ? sanitize_hex_color( $colors['footer_background_color'] ) : '';
 			$footer_font_color            = isset( $colors['footer_font_color'] ) ? sanitize_hex_color( $colors['footer_font_color'] ) : '';
 			$footer_link_color            = isset( $colors['footer_link_color'] ) ? sanitize_hex_color( $colors['footer_link_color'] ) : '';
 
+			$custom_css .= $this->render_css( '.rm-header-s1 .header-top-block', 'background-color', $topbar_background_color );
+			$custom_css .= $this->render_css( '.rm-header-s1 .header-top-block *', 'color', $topbar_text_color );
+			$custom_css .= $this->render_css( '.rm-header-s1 .rm-logo-block', 'background-color', $header_background_color );
+			$custom_css .= $this->render_css( '.bottom-header .primary-navigation-wrap .menu li a', 'color', $menu_color );
+			$custom_css .= $this->render_css( '.bottom-header .primary-navigation-wrap .menu li a:hover', 'color', "{$menu_hover_color} !important" );
+			$custom_css .= $this->render_css( '.bottom-header .site-navigation .menu li .sub-menu li a', 'color', $submenu_color );
+			$custom_css .= $this->render_css( '.bottom-header .site-navigation .menu li .sub-menu li a:hover', 'color', "{$submenu_hover_color} !important" );
+			$custom_css .= $this->render_css( '.mastheader .search-trigger', 'color', $search_icon_color );
+			$custom_css .= $this->render_css( '.mastheader .canvas-trigger', 'color', $header_widgets_icon_color );
 			$custom_css .= $this->render_css( '.widget-title', 'background-color', $section_title_bar_color );
 			$custom_css .= $this->render_css( '.widget-title .title', 'color', $section_title_bar_font_color );
-			$custom_css .= $this->render_css( '.rm-header-s1 .header-top-block', 'background-color', $topbar_background_color );
-			$custom_css .= $this->render_css( '.rm-header-s1 .rm-logo-block', 'background-color', $header_background_color );
 			$custom_css .= $this->render_css( '.footer .footer-inner', 'background-color', $footer_background_color );
 			$custom_css .= $this->render_css( '.footer *, .calendar_wrap caption', 'color', $footer_font_color );
 			$custom_css .= $this->render_css( '.footer a', 'color', $footer_link_color );
@@ -145,33 +159,6 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			 * ===================
 			 */
 
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'color',
-					'custom_control'    => 'WP_Customize_Color_Control',
-					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'section_title_bar_color' ),
-					'default'           => '#eeeeee',
-					'sanitize_callback' => 'sanitize_hex_color',
-					'label'             => esc_html__( 'Section Title Bar Color', 'trending-mag' ),
-					'section'           => 'colors',
-					'priority'          => 10,
-				)
-			);
-			trending_mag_register_option(
-				$wp_customize,
-				array(
-					'type'              => 'color',
-					'custom_control'    => 'WP_Customize_Color_Control',
-					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'section_title_bar_font_color' ),
-					'default'           => '#000000',
-					'sanitize_callback' => 'sanitize_hex_color',
-					'label'             => esc_html__( 'Section Title Bar Font Color', 'trending-mag' ),
-					'section'           => 'colors',
-					'priority'          => 10,
-				)
-			);
-
 			// .rm-header-s1 .header-top-block
 			trending_mag_register_option(
 				$wp_customize,
@@ -183,7 +170,104 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Topbar Background Color', 'trending-mag' ),
 					'section'           => 'colors',
+					'priority'          => 10,
+				)
+			);
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'topbar_text_color' ),
+					'default'           => '#333333',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Topbar Text Color', 'trending-mag' ),
+					'section'           => 'colors',
 					'priority'          => 12,
+				)
+			);
+
+			/**
+			 * Menus and sub menus.
+			 */
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'menu_color' ),
+					'default'           => '#ffffff',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Menu Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 14,
+				)
+			);
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'menu_hover_color' ),
+					'default'           => '#333333',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Menu Hover Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 16,
+				)
+			);
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'submenu_color' ),
+					'default'           => '#333333',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Sub Menu Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 18,
+				)
+			);
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'submenu_hover_color' ),
+					'default'           => '#EA2027',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Sub Menu Hover Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 20,
+				)
+			);
+
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'search_icon_color' ),
+					'default'           => '#333333',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Search Icon Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 22,
+				)
+			);
+
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'header_widgets_icon_color' ),
+					'default'           => '#333333',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Header Widgets Icon Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 24,
 				)
 			);
 
@@ -198,7 +282,34 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Header Background Color', 'trending-mag' ),
 					'section'           => 'colors',
-					'priority'          => 14,
+					'priority'          => 26,
+				)
+			);
+
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'section_title_bar_color' ),
+					'default'           => '#eeeeee',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Section Title Bar Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 28,
+				)
+			);
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'color',
+					'custom_control'    => 'WP_Customize_Color_Control',
+					'name'              => trending_mag_customizer_fields_settings_id( 'colors', 'colors', 'section_title_bar_font_color' ),
+					'default'           => '#000000',
+					'sanitize_callback' => 'sanitize_hex_color',
+					'label'             => esc_html__( 'Section Title Bar Font Color', 'trending-mag' ),
+					'section'           => 'colors',
+					'priority'          => 30,
 				)
 			);
 
@@ -213,7 +324,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Footer Background Color', 'trending-mag' ),
 					'section'           => 'colors',
-					'priority'          => 30,
+					'priority'          => 32,
 				)
 			);
 			trending_mag_register_option(
@@ -226,7 +337,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Footer Font Color', 'trending-mag' ),
 					'section'           => 'colors',
-					'priority'          => 35,
+					'priority'          => 34,
 				)
 			);
 			trending_mag_register_option(
@@ -239,7 +350,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Footer Link Color', 'trending-mag' ),
 					'section'           => 'colors',
-					'priority'          => 40,
+					'priority'          => 36,
 				)
 			);
 
