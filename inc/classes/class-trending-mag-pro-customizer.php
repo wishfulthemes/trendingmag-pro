@@ -25,6 +25,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'customize_register', array( $this, 'load_customizer' ) );
+			add_action( 'customize_register', array( $this, 'settings_override' ), 999 );
 			add_action( 'trending_mag_dynamic_css', array( $this, 'css_styles' ) );
 		}
 
@@ -113,6 +114,22 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 				$custom_css .= $this->render_css( 'p', 'line-height', "{$typography['line_spacing']}px" );
 			}
 			return $custom_css;
+		}
+
+		/**
+		 * We will override the required settings from this function.
+		 *
+		 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+		 */
+		public function settings_override( $wp_customize ) {
+
+			/**
+			 * Front Page > Section Three > Category.
+			 * Remove category selection limitation.
+			 */
+			$wp_customize->get_control( trending_mag_customizer_fields_settings_id( 'front_page', 'section_three', 'category' ) )->description          = esc_html__( 'Select categories for your contents', 'trending-mag' );
+			$wp_customize->get_control( trending_mag_customizer_fields_settings_id( 'front_page', 'section_three', 'category' ) )->input_attrs['limit'] = false;
+
 		}
 
 
