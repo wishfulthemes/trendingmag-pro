@@ -20,9 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$trending_mag_pro_plugin_data    = function_exists( 'get_file_data' ) ? get_file_data( __FILE__, array( 'Version' => 'Version' ), false ) : array();
+$trending_mag_pro_plugin_version = isset( $trending_mag_pro_plugin_data['Version'] ) ? $trending_mag_pro_plugin_data['Version'] : '1.0.0';
+
 ! defined( 'TRENDING_MAG_PRO_ROOT' ) ? define( 'TRENDING_MAG_PRO_ROOT', plugin_dir_path( __FILE__ ) ) : '';
 ! defined( 'TRENDING_MAG_PRO_ROOT_URL' ) ? define( 'TRENDING_MAG_PRO_ROOT_URL', plugin_dir_url( __FILE__ ) ) : '';
-
+! defined( 'TRENDING_MAG_PRO_CURRENT_VERSION' ) ? define( 'TRENDING_MAG_PRO_CURRENT_VERSION', $trending_mag_pro_plugin_version ) : '';
 
 if ( ! function_exists( 'trending_mag_pro' ) ) {
 

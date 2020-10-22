@@ -98,6 +98,8 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 			$root_dir = TRENDING_MAG_PRO_ROOT;
 
 			$files_path = array(
+				'inc/updater/init.php',
+
 				'inc/helpers.php',
 
 				'inc/admin/register-custom-post-types.php',
