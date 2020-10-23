@@ -225,8 +225,8 @@ class Trending_Mag_Pro_License_Page {
 	public function admin_menu() {
 
 		add_menu_page(
-			esc_html__( $this->download_name . ' License', 'trending-mag-pro' ),
-			esc_html__( $this->download_name . ' License', 'trending-mag-pro' ),
+			esc_html( $this->download_name . ' License' ),
+			esc_html( $this->download_name . ' License' ),
 			'manage_options',
 			$this->page_slug,
 			array(

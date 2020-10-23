@@ -123,6 +123,10 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		 */
 		public function settings_override( $wp_customize ) {
 
+			if ( ! function_exists( 'trending_mag_customizer_fields_settings_id' ) ) {
+				return $wp_customize;
+			}
+
 			/**
 			 * Front Page > Section Three > Category.
 			 * Remove category selection limitation.

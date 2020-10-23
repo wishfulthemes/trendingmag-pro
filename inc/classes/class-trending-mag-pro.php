@@ -33,8 +33,16 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 		/**
 		 * Enable pro demos in Advanced Import ( demo import page )
 		 */
-		public static function enable_pro_demos( $is_pro_active ) {
-			return true;
+		public static function enable_pro_demos() {
+
+			/**
+			 * If `ACTIVATED_LICENSE_PRO` is defined, the licence is valid.
+			 */
+			if ( defined( 'ACTIVATED_LICENSE_PRO' ) && ACTIVATED_LICENSE_PRO === TRENDING_MAG_PRO_CURRENT_VERSION ) {
+				return true;
+			}
+
+			return false;
 		}
 
 		/**

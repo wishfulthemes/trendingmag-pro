@@ -25,7 +25,47 @@ $trending_mag_pro_plugin_version = isset( $trending_mag_pro_plugin_data['Version
 
 ! defined( 'TRENDING_MAG_PRO_ROOT' ) ? define( 'TRENDING_MAG_PRO_ROOT', plugin_dir_path( __FILE__ ) ) : '';
 ! defined( 'TRENDING_MAG_PRO_ROOT_URL' ) ? define( 'TRENDING_MAG_PRO_ROOT_URL', plugin_dir_url( __FILE__ ) ) : '';
+! defined( 'TRENDING_MAG_PRO_FILE' ) ? define( 'TRENDING_MAG_PRO_FILE', __FILE__ ) : '';
 ! defined( 'TRENDING_MAG_PRO_CURRENT_VERSION' ) ? define( 'TRENDING_MAG_PRO_CURRENT_VERSION', $trending_mag_pro_plugin_version ) : '';
+
+if ( ! function_exists( 'trending_mag_pro_admin_notice' ) ) {
+
+	/**
+	 * Prints the admin notice.
+	 */
+	function trending_mag_pro_admin_notice() {
+
+		$notice  = '';
+		$notice .= '<div class="notice error trending-mag-pro-error-notice is-dismissible">';
+		$notice .= '<p>' . __( 'You need to have', 'trending-mag-pro' ) . ' <a href="https://wordpress.org/themes/wishful-blog/" target="_blank">Trending Mag</a> ' . __( 'theme in order to use Trending Mag Pro plugin.', 'trending-mag-pro' ) . '</p>';
+		$notice .= '<p><i>Trending Mag Pro</i> ' . __( 'plugin has been deactivated.', 'trending-mag-pro' ) . '</p>';
+		$notice .= '</div>';
+
+		echo wp_kses_post( $notice );
+	}
+}
+
+if ( ! function_exists( 'trending_mag_pro_print_notice' ) ) {
+
+	/**
+	 * Checks if trending mag theme is activated or not when plugin is activated and print notice
+	 */
+	function trending_mag_pro_print_notice() {
+		$current_active_theme = get_stylesheet();
+		if ( 'trending-mag' === $current_active_theme ) {
+			return;
+		}
+
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+
+		trending_mag_pro_admin_notice();
+		deactivate_plugins( TRENDING_MAG_PRO_FILE );
+	}
+	add_action( 'admin_notices', 'trending_mag_pro_print_notice' );
+}
+
 
 if ( ! function_exists( 'trending_mag_pro' ) ) {
 
