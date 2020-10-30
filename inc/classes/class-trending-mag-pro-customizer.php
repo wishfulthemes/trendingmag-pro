@@ -21,6 +21,25 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 	class Trending_Mag_Pro_Customizer {
 
 		/**
+		 * Array of font weights.
+		 *
+		 * @var $font_weights
+		 */
+		private $font_weights = array(
+			''    => 'Default',
+			'100' => '100',
+			'200' => '200',
+			'300' => '300',
+			'400' => '400',
+			'500' => '500',
+			'600' => '600',
+			'700' => '700',
+			'800' => '800',
+			'900' => '900',
+		);
+
+
+		/**
 		 * Init customizer class.
 		 */
 		public function __construct() {
@@ -36,6 +55,105 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		private function render_css( $selector, $property, $value ) {
 			$css = $selector . '{ ' . $property . ':' . esc_attr( $value ) . '; }';
 			return $css;
+		}
+
+		private function frontpage_typography_controls( $wp_customize, $options ) {
+
+			if ( ! function_exists( 'trending_mag_register_option' ) ) {
+				return;
+			}
+
+			if ( ! function_exists( 'trending_mag_customizer_fields_settings_id' ) ) {
+				return;
+			}
+
+			if ( ! function_exists( 'trending_mag_get_customizer_section_id' ) ) {
+				return;
+			}
+
+			$panel_id   = $options['panel_id'];
+			$section_id = $options['section_id'];
+			$unset      = isset( $options['unset'] ) ? $options['unset'] : false;
+
+			$font_weights = $this->font_weights;
+
+			$active_callback = "trending_mag_customizer_is_{$section_id}_enabled";
+
+			/**
+			 * Options for section headings.
+			 */
+
+			if ( 'heading' !== $unset ) {
+				trending_mag_register_option(
+					$wp_customize,
+					array(
+						'type'              => 'select',
+						'name'              => trending_mag_customizer_fields_settings_id( $panel_id, $section_id, 'heading_font_weight' ),
+						'default'           => 'default',
+						'active_callback'   => $active_callback,
+						'sanitize_callback' => 'trending_mag_sanitize_select',
+						'label'             => esc_html__( 'Heading Font Weight', 'trending-mag' ),
+						'choices'           => $font_weights,
+						'description'       => __( 'Notice: Font weight might not display expected result with every fonts.', 'trending-mag-pro' ),
+						'section'           => trending_mag_get_customizer_section_id( $panel_id, $section_id ),
+						'priority'          => 40,
+					)
+				);
+				trending_mag_register_option(
+					$wp_customize,
+					array(
+						'type'              => 'number',
+						'name'              => trending_mag_customizer_fields_settings_id( $panel_id, $section_id, 'heading_font_size' ),
+						'active_callback'   => $active_callback,
+						'sanitize_callback' => 'absint',
+						'input_attrs'       => array(
+							'min' => 0,
+						),
+						'label'             => esc_html__( 'Heading Font Size', 'trending-mag' ),
+						'description'       => __( 'Font size in pixels.', 'trending-mag-pro' ),
+						'section'           => trending_mag_get_customizer_section_id( $panel_id, $section_id ),
+						'priority'          => 45,
+					)
+				);
+			}
+
+			/**
+			 * Options for section contents.
+			 */
+			if ( 'content' !== $unset ) {
+				trending_mag_register_option(
+					$wp_customize,
+					array(
+						'type'              => 'select',
+						'name'              => trending_mag_customizer_fields_settings_id( $panel_id, $section_id, 'content_font_weight' ),
+						'default'           => 'default',
+						'active_callback'   => $active_callback,
+						'sanitize_callback' => 'trending_mag_sanitize_select',
+						'label'             => esc_html__( 'Content Font Weight', 'trending-mag' ),
+						'choices'           => $font_weights,
+						'description'       => __( 'Notice: Font weight might not display expected result with every fonts.', 'trending-mag-pro' ),
+						'section'           => trending_mag_get_customizer_section_id( $panel_id, $section_id ),
+						'priority'          => 50,
+					)
+				);
+				trending_mag_register_option(
+					$wp_customize,
+					array(
+						'type'              => 'number',
+						'name'              => trending_mag_customizer_fields_settings_id( $panel_id, $section_id, 'content_font_size' ),
+						'active_callback'   => $active_callback,
+						'sanitize_callback' => 'absint',
+						'input_attrs'       => array(
+							'min' => 0,
+						),
+						'label'             => esc_html__( 'Content Font Size', 'trending-mag' ),
+						'description'       => __( 'Font size in pixels.', 'trending-mag-pro' ),
+						'section'           => trending_mag_get_customizer_section_id( $panel_id, $section_id ),
+						'priority'          => 55,
+					)
+				);
+			}
+
 		}
 
 
@@ -113,6 +231,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			if ( isset( $typography['line_spacing'] ) && ! empty( $typography['line_spacing'] ) ) {
 				$custom_css .= $this->render_css( 'p', 'line-height', "{$typography['line_spacing']}px" );
 			}
+
 			return $custom_css;
 		}
 
@@ -164,6 +283,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			$this->footer_options( $wp_customize );
 			$this->typography( $wp_customize );
 			$this->frontpage_section_colors( $wp_customize );
+			$this->frontpage_section_typography( $wp_customize );
 		}
 
 
@@ -399,18 +519,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 		 */
 		private function typography( $wp_customize ) {
 
-			$font_weights = array(
-				''    => 'Default',
-				'100' => '100',
-				'200' => '200',
-				'300' => '300',
-				'400' => '400',
-				'500' => '500',
-				'600' => '600',
-				'700' => '700',
-				'800' => '800',
-				'900' => '900',
-			);
+			$font_weights = $this->font_weights;
 
 			trending_mag_register_option(
 				$wp_customize,
@@ -566,6 +675,42 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'priority'          => 35,
 				)
 			);
+		}
+
+		private function frontpage_section_typography( $wp_customize ) {
+
+			$options = array(
+				'front_page' => array(
+					'news_ticker'   => false,
+					'banner_slider' => 'content',
+					'section_one'   => false,
+					'section_two'   => false,
+					'section_three' => false,
+					'section_four'  => false,
+					'section_five'  => false,
+				),
+			);
+
+			if ( is_array( $options ) && ! empty( $options ) ) {
+				foreach ( $options as $panel_id => $sections ) {
+
+					if ( is_array( $sections ) && ! empty( $sections ) ) {
+						foreach ( $sections as $section_id => $unset ) {
+
+							$this->frontpage_typography_controls(
+								$wp_customize,
+								array(
+									'panel_id'   => $panel_id,
+									'section_id' => $section_id,
+									'unset'      => $unset,
+								)
+							);
+
+						}
+					}
+				}
+			}
+
 		}
 
 	}
