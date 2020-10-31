@@ -232,6 +232,79 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 				$custom_css .= $this->render_css( 'p', 'line-height', "{$typography['line_spacing']}px" );
 			}
 
+			/**
+			 * Frontpage sections typography mods.
+			 */
+			$frontpage_typo_options = array(
+				'front_page' => array(
+					'news_ticker'   => array(
+						'heading' => '.nt_title',
+						'content' => '#webticker li a span',
+					),
+					'banner_slider' => array(
+						'heading' => '.rm-banner-s1 .post-title h2',
+					),
+					'section_one'   => array(
+						'heading' => '.rm-full-widget-area.full-layout-1 .rm-col.right .widget-inn-tt h2',
+						'content' => '.rm-full-widget-area.full-layout-1 .rm-col.right p',
+					),
+					'section_two'   => array(
+						'heading' => '.rm-full-widget-area .layout-2 .rm-col.right .widget-inn-tt h2',
+						'content' => '.rm-full-widget-area .layout-2 .rm-col.right p',
+					),
+					'section_three' => array(
+						'heading' => '.rm-full-widget-area .layout-3 .small-widget-area .widget-inn-tt .tt-in',
+					),
+					'section_four'  => array(
+						'heading' => '.rm-full-widget-area.rm-banner-s3 .banner-inner .rm-row .slick-slide .rm-widget-area-wraper .post-title h2',
+					),
+					'section_five'  => array(
+						'heading' => '.rm-full-widget-area .layout-5 .row .widget-inn-tt h2',
+						'content' => '.rm-full-widget-area .layout-5 .row p',
+					),
+				),
+			);
+
+			/**
+			 * Let's roll it.
+			 */
+			if ( is_array( $frontpage_typo_options ) && ! empty( $frontpage_typo_options ) ) {
+				foreach ( $frontpage_typo_options as $panel_id => $sections ) {
+
+					if ( is_array( $sections ) && ! empty( $sections ) ) {
+						foreach ( $sections as $section_id => $typo_settings_type ) {
+
+							$heading_font_weight = ! empty( $frontpage[ $section_id ]['heading_font_weight'] ) ? $frontpage[ $section_id ]['heading_font_weight'] : '';
+							$heading_font_size   = ! empty( $frontpage[ $section_id ]['heading_font_size'] ) ? $frontpage[ $section_id ]['heading_font_size'] : '';
+							$content_font_weight = ! empty( $frontpage[ $section_id ]['content_font_weight'] ) ? $frontpage[ $section_id ]['content_font_weight'] : '';
+							$content_font_size   = ! empty( $frontpage[ $section_id ]['content_font_size'] ) ? $frontpage[ $section_id ]['content_font_size'] : '';
+
+							$heading_class = ! empty( $typo_settings_type['heading'] ) ? $typo_settings_type['heading'] : '';
+							$content_class = ! empty( $typo_settings_type['content'] ) ? $typo_settings_type['content'] : '';
+
+							/**
+							 * Do the magic !!!
+							 */
+							if ( $heading_class && $heading_font_weight && 'default' !== $heading_font_weight ) {
+								$custom_css .= $this->render_css( $heading_class, 'font-weight', $heading_font_weight );
+							}
+
+							if ( $heading_class && $heading_font_size && 'default' !== $heading_font_size ) {
+								$custom_css .= $this->render_css( $heading_class, 'font-size', "{$heading_font_size}px" );
+							}
+
+							if ( $content_class && $content_font_weight && 'default' !== $content_font_weight ) {
+								$custom_css .= $this->render_css( $content_class, 'font-weight', $content_font_weight );
+							}
+
+							if ( $content_class && $content_font_size && 'default' !== $content_font_size ) {
+								$custom_css .= $this->render_css( $content_class, 'font-size', "{$content_font_size}px" );
+							}
+						}
+					}
+				}
+			}
+
 			return $custom_css;
 		}
 
@@ -630,6 +703,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'custom_control'    => 'WP_Customize_Color_Control',
 					'name'              => trending_mag_customizer_fields_settings_id( $trending_mag_panel_name, 'news_ticker', 'heading_background_color' ),
 					'default'           => '#333333',
+					'active_callback'   => 'trending_mag_customizer_is_news_ticker_enabled',
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Heading Background Color', 'trending-mag' ),
 					'section'           => trending_mag_get_customizer_section_id( $trending_mag_panel_name, 'news_ticker' ),
@@ -643,6 +717,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'custom_control'    => 'WP_Customize_Color_Control',
 					'name'              => trending_mag_customizer_fields_settings_id( $trending_mag_panel_name, 'news_ticker', 'heading_text_color' ),
 					'default'           => '#FFFFFF',
+					'active_callback'   => 'trending_mag_customizer_is_news_ticker_enabled',
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Heading Text Color', 'trending-mag' ),
 					'section'           => trending_mag_get_customizer_section_id( $trending_mag_panel_name, 'news_ticker' ),
@@ -656,6 +731,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'custom_control'    => 'WP_Customize_Color_Control',
 					'name'              => trending_mag_customizer_fields_settings_id( $trending_mag_panel_name, 'news_ticker', 'posts_background_color' ),
 					'default'           => '#f1f1f1', // .tickercontainer .mask
+					'active_callback'   => 'trending_mag_customizer_is_news_ticker_enabled',
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Posts Background Color', 'trending-mag' ),
 					'section'           => trending_mag_get_customizer_section_id( $trending_mag_panel_name, 'news_ticker' ),
@@ -669,6 +745,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'custom_control'    => 'WP_Customize_Color_Control',
 					'name'              => trending_mag_customizer_fields_settings_id( $trending_mag_panel_name, 'news_ticker', 'posts_text_color' ),
 					'default'           => '#333333',
+					'active_callback'   => 'trending_mag_customizer_is_news_ticker_enabled',
 					'sanitize_callback' => 'sanitize_hex_color',
 					'label'             => esc_html__( 'Posts Text Color', 'trending-mag' ),
 					'section'           => trending_mag_get_customizer_section_id( $trending_mag_panel_name, 'news_ticker' ),
@@ -685,8 +762,8 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'banner_slider' => 'content',
 					'section_one'   => false,
 					'section_two'   => false,
-					'section_three' => false,
-					'section_four'  => false,
+					'section_three' => 'content',
+					'section_four'  => 'content',
 					'section_five'  => false,
 				),
 			);
