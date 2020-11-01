@@ -116,6 +116,7 @@ if ( ! class_exists( 'Trending_Mag_Pro' ) ) {
 				'inc/classes/class-trending-mag-pro-save-posts.php',
 				'inc/classes/class-trending-mag-pro-widget.php',
 				'inc/classes/class-trending-mag-pro-customizer.php',
+				'inc/classes/class-trending-mag-pro-header-layouts.php',
 
 				'inc/hooks.php',
 			);

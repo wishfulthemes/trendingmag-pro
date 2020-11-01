@@ -94,3 +94,68 @@ if ( ! function_exists( 'trending_mag_pro_copyright_text' ) ) {
 	}
 	add_filter( 'trending_mag_footer_copyright', 'trending_mag_pro_copyright_text' );
 }
+
+
+if ( function_exists( 'trending_mag_get_theme_mod' ) && 'header-one' !== trending_mag_get_theme_mod( 'general_options', 'header', 'header_layout' ) ) {
+
+	$header_layout = trending_mag_get_theme_mod( 'general_options', 'header', 'header_layout' );
+
+	if ( 'header-two' === $header_layout ) {
+		$is_removed = remove_action( 'trending_mag_header_logo_contents', 'trending_mag_header_site_identity', 15 );
+		remove_action( 'trending_mag_header_logo_contents', 'trending_mag_header_ad', 20 );
+	}
+
+	error_log(
+		print_r(
+			array(
+				'is-removed'    => $is_removed,
+				'header-layout' => $header_layout,
+			),
+			true
+		)
+	);
+
+
+	if ( ! function_exists( 'trending_mag_pro_header_layout_two' ) ) {
+
+		/**
+		 * Set html for header layout two.
+		 */
+		function trending_mag_pro_header_layout_two() {
+			$panel   = 'title_tagline';
+			$section = 'title_tagline';
+
+			$site_title = ! trending_mag_get_theme_mod( $panel, $section, 'hide_site_title' ) ? get_bloginfo() : '';
+			$tagline    = ! trending_mag_get_theme_mod( $panel, $section, 'hide_tagline' ) && get_bloginfo( 'description' ) ? sprintf( '<p class="site-description">%s</p>', esc_html( get_bloginfo( 'description' ) ) ) : '';
+			$has_logo   = function_exists( 'has_custom_logo' ) && function_exists( 'the_custom_logo' ) && has_custom_logo();
+
+			?>
+			<!-- header-layout-two -->
+			<div class="rm-col">
+
+				<?php
+				if ( $has_logo ) {
+					?>
+					<div class="site-identity">
+						<?php the_custom_logo(); ?>
+					</div><!-- // site-identity -->
+				<?php } ?>
+
+				<?php if ( $site_title || $tagline ) { ?>
+					<div class="site-branding-text" >
+						<?php if ( $site_title ) { ?>
+							<h1 class="site-title">
+								<a href="<?php echo esc_url( home_url() ); ?>" rel="home"><?php echo esc_html( $site_title ); ?></a>
+							</h1>
+						<?php } ?>
+						<?php echo wp_kses_post( $tagline ); ?>
+					</div>
+				<?php } ?>
+
+			</div><!-- // rm-col -->
+			<!-- // header-layout-two -->
+			<?php
+		}
+		add_action( 'trending_mag_header_logo_contents', 'trending_mag_pro_header_layout_two', 15 );
+	}
+}

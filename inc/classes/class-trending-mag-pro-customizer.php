@@ -305,6 +305,12 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 				}
 			}
 
+			/**
+			 * For header layouts.
+			 */
+			$custom_css .= $this->render_css( '.header-layout-two', 'width', '50%' );
+			$custom_css .= $this->render_css( '.header-layout-two', 'margin', '0 auto' );
+
 			return $custom_css;
 		}
 
@@ -353,6 +359,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			}
 
 			$this->color_options( $wp_customize );
+			$this->header_options( $wp_customize );
 			$this->footer_options( $wp_customize );
 			$this->typography( $wp_customize );
 			$this->frontpage_section_colors( $wp_customize );
@@ -565,6 +572,29 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 					'label'             => esc_html__( 'Footer Link Color', 'trending-mag' ),
 					'section'           => 'colors',
 					'priority'          => 36,
+				)
+			);
+
+		}
+
+		private function header_options( $wp_customize ) {
+
+			$header_layouts = array(
+				'header-one' => __( 'Header One [ Default ]', 'trending-mag-pro' ),
+				'header-two' => __( 'Header Two', 'trending-mag-pro' ),
+			);
+
+			trending_mag_register_option(
+				$wp_customize,
+				array(
+					'type'              => 'select',
+					'name'              => trending_mag_customizer_fields_settings_id( 'general_options', 'header', 'header_layout' ),
+					'default'           => 'header-one',
+					'sanitize_callback' => 'trending_mag_sanitize_select',
+					'label'             => esc_html__( 'Header Layout', 'trending-mag' ),
+					'choices'           => $header_layouts,
+					'section'           => trending_mag_get_customizer_section_id( 'general_options', 'header' ),
+					'priority'          => 20,
 				)
 			);
 
