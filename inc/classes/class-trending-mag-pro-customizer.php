@@ -310,6 +310,7 @@ if ( ! class_exists( 'Trending_Mag_Pro_Customizer' ) ) {
 			 */
 			$custom_css .= $this->render_css( '.header-layout-two', 'width', '50%' );
 			$custom_css .= $this->render_css( '.header-layout-two', 'margin', '0 auto' );
+			$custom_css .= $this->render_css( '.header-layout-two .site-branding-text', 'text-align', 'center' );
 
 			return $custom_css;
 		}
