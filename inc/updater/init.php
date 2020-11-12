@@ -24,7 +24,7 @@ $config = array(
 	'host_url'    => 'https://wishfulthemes.com', // Site where EDD is hosted
 	'version'     => $current_version, // The current version of this plugin
 	'author'      => 'WishfulThemes', // The author of this plugin
-	'download_id' => '', // Download ID of a product
+	'download_id' => '1057', // Download ID of a product
 	'text_domain' => 'trending-mag-pro',
 	'name'        => $trending_mag_pro['Name'],
 );
